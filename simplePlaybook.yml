@@ -1,0 +1,37 @@
+---
+- hosts: all
+  become: true
+  vars:
+  tasks:
+    
+
+    - name: Get Google Chrome Key
+      shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+ 
+    - name: Add Google Chrome Repo
+      copy: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
+
+    - name: Get plex Key
+      shell: wget -q -O - https://downloads.plex.tv/plex-keys/PlexSign.key | apt-key add -
+ su
+    - name: Add plex repo Repo
+      copy: content="deb https://downloads.plex.tv/repo/deb public main" dest=/etc/apt/sources.list.d/plexmediaserver.list owner=root group=root mode=644
+
+    - name: Get vscode Key
+      shell: wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+
+    - name: Add vscode Repo
+      copy: content="deb https://packages.microsoft.com/repos/vscode stable main" dest=/etc/apt/sources.list.d/vscode.list owner=root group=root mode=644
+
+    - name: Update apt
+      apt: update_cache=yes
+
+    - name: Install Google Chrome
+      apt: pkg=google-chrome-stable state=latest
+
+    - name: Install plex
+      apt: pkg=plexmediaserver state=latest
+
+    - name: Install vscode
+      apt: pkg=code state=latest
+
